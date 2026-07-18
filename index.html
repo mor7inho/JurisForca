@@ -250,6 +250,8 @@
             display: inline-flex;
             align-items: center;
             gap: 2px;
+            max-width: 100%;
+            transition: font-size 0.15s ease;
         }
 
         .word-group.revealed {
@@ -516,7 +518,7 @@
 <div class="container" id="app">
     <header>
         <h1>Juris Forca</h1>
-        <div class="subhead">Direito Penal · Princípios e fundamentos</div>
+        <div class="subhead">Direito Penal · Princípios e fundamentos</div> 
     </header>
 
     <div class="box">
@@ -583,7 +585,7 @@
     explicacao: "Previsto no art. 5°, XXXIX da CF/88 e art. 1° do CP, este princípio é a base do Direito Penal. Garante a segurança jurídica ao permitir que o cidadão saiba previamente quais condutas são criminosas. Divide-se em dois subprincípios: Reserva Legal e Anterioridade. A violação a este princípio gera a inconstitucionalidade da norma. É uma garantia individual contra o arbítrio estatal, impedindo a punição por fatos que, no momento da prática, não eram considerados crimes. As bancas frequentemente cobram a diferença entre este princípio e a irretroatividade da lei penal, sendo que a exceção é a retroatividade benéfica ao réu." 
   },
   { 
-    termo: "Princípio da [OCULTAR]Reserva Legal", 
+    termo: "Princípio da [OCULTAR]Reserva [OCULTAR]Legal", 
     descricao: "Somente lei em sentido estrito (ordinária) pode definir crimes e cominar penas.", 
     explicacao: "Decorre do princípio da legalidade. Impede que Medidas Provisórias, Decretos ou outros atos normativos criem crimes ou estabeleçam sanções penais. O STF admite MP em matéria penal, desde que para beneficiar o réu. Este princípio também veda a edição de leis vagas (princípio da taxatividade), que não descrevem com clareza a conduta proibida, pois isso compromete a segurança jurídica. Exemplo: lei que criminalize 'condutas atentatórias aos bons costumes' seria inconstitucional por violar a reserva legal, pois o termo é vago e impreciso. Em provas, é comum a confusão com a legalidade em sentido amplo; a reserva legal exige lei formal (ato do Legislativo)." 
   },
@@ -1379,6 +1381,30 @@
             termoRevelado
         );
         wordDisplay.innerHTML = html;
+        ajustarFonteWordGroups();
+    }
+
+    // ------------------------------------------------------------
+    // AJUSTE DE FONTE PARA PALAVRAS OCULTAS MUITO LONGAS
+    // Atua apenas dentro de #wordDisplay, e apenas nos grupos
+    // (.word-group) que ultrapassam a largura disponível — não
+    // afeta o restante da página nem força a frase inteira numa
+    // única linha (o wrap normal da frase é preservado).
+    // ------------------------------------------------------------
+    function ajustarFonteWordGroups() {
+        const containerWidth = wordDisplay.clientWidth;
+        if (!containerWidth) return;
+
+        wordDisplay.querySelectorAll('.word-group').forEach(grupo => {
+            grupo.style.fontSize = '';
+
+            let escala = 100;
+            const MIN_ESCALA = 45;
+            while (grupo.scrollWidth > containerWidth && escala > MIN_ESCALA) {
+                escala -= 5;
+                grupo.style.fontSize = escala + '%';
+            }
+        });
     }
 
     function renderizarCoracoes() {
@@ -1727,6 +1753,14 @@
 
         aplicarEscala();
     })();
+
+    // Reajusta o tamanho da(s) palavra(s) oculta(s) longa(s) ao
+    // redimensionar/girar a tela. Não afeta nenhum outro elemento.
+    let resizeTimeoutWordDisplay = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeoutWordDisplay);
+        resizeTimeoutWordDisplay = setTimeout(ajustarFonteWordGroups, 150);
+    });
 
     carregarBloco(0);
 </script>
