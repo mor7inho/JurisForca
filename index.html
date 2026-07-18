@@ -251,7 +251,7 @@
             align-items: center;
             gap: 2px;
             max-width: 100%;
-            transition: font-size 0.15s ease;
+            transition: font-size 0.15s ease, color 0.15s ease;
         }
 
         .word-group.revealed {
@@ -261,6 +261,18 @@
 
         .word-group.hidden {
             color: #1a1a1f;
+            /* Lacunas (letras a preencher) um pouco menores que palavras já reveladas */
+            font-size: 0.82em;
+        }
+
+        /* Aplicada via JS quando, mesmo no tamanho mínimo, a palavra
+           ainda não cabe numa linha só: permite quebrar internamente
+           e destaca com cor diferente para deixar claro que é um caso à parte. */
+        .word-group.wrap-line {
+            flex-wrap: wrap;
+            row-gap: 4px;
+            justify-content: center;
+            color: #b3541e !important;
         }
 
         .word-display .letter-slot {
@@ -273,9 +285,18 @@
             padding: 0 2px;
         }
 
+        .word-group.hidden .letter-slot {
+            min-width: 16px;
+        }
+
         .word-display .letter-slot.filled {
             border-bottom-color: #2c2c3a;
             color: #2c2c3a;
+        }
+
+        .word-group.wrap-line .letter-slot.filled {
+            border-bottom-color: #b3541e;
+            color: #b3541e;
         }
 
         .word-display .space-slot {
@@ -1397,12 +1418,21 @@
 
         wordDisplay.querySelectorAll('.word-group').forEach(grupo => {
             grupo.style.fontSize = '';
+            grupo.classList.remove('wrap-line');
 
+            // Encolhe moderadamente (até 75%) antes de recorrer à quebra de linha
             let escala = 100;
-            const MIN_ESCALA = 45;
+            const MIN_ESCALA = 75;
             while (grupo.scrollWidth > containerWidth && escala > MIN_ESCALA) {
                 escala -= 5;
                 grupo.style.fontSize = escala + '%';
+            }
+
+            // Se mesmo reduzida ainda não coube numa linha, permite quebrar
+            // internamente e destaca com cor diferente, voltando ao tamanho normal
+            if (grupo.scrollWidth > containerWidth) {
+                grupo.style.fontSize = '';
+                grupo.classList.add('wrap-line');
             }
         });
     }
