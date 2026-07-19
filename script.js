@@ -3,59 +3,11 @@
     
 
     // ------------------------------------------------------------
-    // ALGORITMO DE DISTRIBUIÇÃO
+    // NOTA: distribuirBlocos, extrairPalavraOculta, removerMarcaOcultar,
+    // renderizarMarkdown e o controle de tema agora vivem em shared.js,
+    // carregado antes deste arquivo, e são reaproveitados também pelas
+    // páginas de início e de leitura.
     // ------------------------------------------------------------
-    function distribuirBlocos(conceitos, tamanhoIdeal = 10) {
-        const total = conceitos.length;
-        if (total <= tamanhoIdeal) return [conceitos.slice()];
-        let qtdBlocos = Math.ceil(total / tamanhoIdeal);
-        let base = Math.floor(total / qtdBlocos);
-        let resto = total % qtdBlocos;
-        const blocos = [];
-        let inicio = 0;
-        for (let i = 0; i < qtdBlocos; i++) {
-            let adicional = (i < resto) ? 1 : 0;
-            let tamanho = base + adicional;
-            if (i === qtdBlocos - 1) tamanho = total - inicio;
-            blocos.push(conceitos.slice(inicio, inicio + tamanho));
-            inicio += tamanho;
-        }
-        return blocos;
-    }
-    
-    
-    // ------------------------------------------------------------
-    // FUNÇÃO PARA EXTRAIR A PALAVRA OCULTA DO TERMO
-    // ------------------------------------------------------------
-    function extrairPalavraOculta(termo) {
-        // Busca o padrão [OCULTAR]palavra
-        const match = termo.match(/\[OCULTAR\](\S+)/);
-        if (match) {
-            return match[1];
-        }
-        // Fallback: usa a palavra mais longa
-        const palavras = termo.split(' ');
-        let maior = '';
-        for (const p of palavras) {
-            if (p.length > maior.length) maior = p;
-        }
-        return maior;
-    }
-
-    function removerMarcaOcultar(termo) {
-        return termo.replace(/\[OCULTAR\]/g, '');
-    }
-
-    // ------------------------------------------------------------
-    // RENDERIZAÇÃO DE MARKDOWN (usada apenas na explicação)
-    // ------------------------------------------------------------
-    marked.setOptions({ breaks: true });
-
-    function renderizarMarkdown(md) {
-        if (!md) return '';
-        const html = marked.parse(md);
-        return DOMPurify.sanitize(html);
-    }
 
     // ------------------------------------------------------------
     // NORMALIZAÇÃO DE TEXTO
@@ -136,7 +88,7 @@
                     const letra = palavra[i];
                     // Verifica se é caractere especial (pontuação)
                     if (!/[a-zA-ZÀ-ÿ]/.test(letra)) {
-                        html += `<span class="letter-slot filled" style="border-bottom-color: transparent; color: #2c2c3a;">${letra}</span>`;
+                        html += `<span class="letter-slot filled" style="border-bottom-color: transparent; color: var(--text-primary);">${letra}</span>`;
                         continue;
                     }
                     
@@ -163,7 +115,7 @@
                 html += `<span class="word-group revealed">`;
                 for (let i = 0; i < palavra.length; i++) {
                     const letra = palavra[i];
-                    html += `<span class="letter-slot filled" style="border-bottom-color: #2b7a4b; color: #2b7a4b;">${letra.toUpperCase()}</span>`;
+                    html += `<span class="letter-slot filled" style="border-bottom-color: var(--green); color: var(--green);">${letra.toUpperCase()}</span>`;
                 }
                 html += `</span>`;
             }
@@ -179,7 +131,7 @@
     // ------------------------------------------------------------
     // ESTADO
     // ------------------------------------------------------------
-    const blocos = distribuirBlocos(CONCEITOS_RAW, 10);
+    const blocos = distribuirBlocos(CONCEITOS_RAW, TAMANHO_IDEAL_BLOCO);
     const estadoBlocos = blocos.map(() => null);
     let blocoAtual = 0;
     let filaAtual = [];
@@ -212,6 +164,7 @@
     const nextBlockBtn = document.getElementById('nextBlockBtn');
     const prevTermBtn = document.getElementById('prevTermBtn');
     const nextTermBtn = document.getElementById('nextTermBtn');
+    const readBlockLink = document.getElementById('readBlockLink');
 
     function setResultado(html) {
         resultContent.innerHTML = html;
@@ -259,6 +212,7 @@
         termoRevelado = false;
 
         blockLabel.textContent = `Bloco ${blocoAtual + 1}/${blocos.length}`;
+        if (readBlockLink) readBlockLink.href = `leitura.html?bloco=${blocoAtual + 1}`;
 
         if (jogoFinalizado || filaAtual.length === 0) {
             mostrarBlocoConcluido();
@@ -463,13 +417,13 @@
     function tentarPalavraCompleta() {
         if (aguardandoAutoavaliacao || jogoFinalizado || termoRevelado) return;
         if (tentativaPalavraUsada) {
-            setResultado(`<span style="color: #b68b5c;">⚠️ Você já usou sua tentativa para este termo.</span>`);
+            setResultado(`<span style="color: var(--amber);">⚠️ Você já usou sua tentativa para este termo.</span>`);
             return;
         }
         
         const resposta = answerInput.value.trim();
         if (!resposta) {
-            setResultado(`<span style="color: #b34a4a;">⚠️ Digite a palavra que falta.</span>`);
+            setResultado(`<span style="color: var(--red);">⚠️ Digite a palavra que falta.</span>`);
             return;
         }
         
@@ -499,7 +453,7 @@
             
             const termoExibicao = removerMarcaOcultar(termoAtual.termo);
             setResultado(`
-                <span style="color: #b34a4a;">❌ Palavra incorreta!</span>
+                <span style="color: var(--red);">❌ Palavra incorreta!</span>
                 <div style="margin-top:4px;"><span class="term-display">${termoExibicao.toUpperCase()}</span></div>
                 <div class="explanation">${renderizarMarkdown(termoAtual.explicacao)}</div>
                 <div class="self-eval">
@@ -745,4 +699,6 @@
         resizeTimeoutWordDisplay = setTimeout(ajustarFonteWordGroups, 150);
     });
 
-    carregarBloco(0);
+    const blocoParam = parseInt(obterParametroURL('bloco'), 10);
+    const blocoInicial = (!isNaN(blocoParam) && blocoParam >= 1 && blocoParam <= blocos.length) ? (blocoParam - 1) : 0;
+    carregarBloco(blocoInicial);

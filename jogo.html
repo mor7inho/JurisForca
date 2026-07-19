@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <title>Juris Forca · Jogo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+    <script>
+        // Aplica o tema salvo (ou preferência do sistema) antes da renderização,
+        // evitando "flash" de tema errado ao carregar a página.
+        (function() {
+            try {
+                const salvo = localStorage.getItem('forcaCarrossel_theme');
+                const tema = salvo || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', tema);
+            } catch (e) {}
+        })();
+    </script>
+</head>
+<body>
+<div class="container" id="app">
+    <header>
+        <a class="home-link-btn" href="index.html" aria-label="Voltar ao início">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path></svg>
+        </a>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Ativar modo escuro">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <h1>Juris Forca</h1>
+        <div class="subhead">Direito Penal · Princípios e fundamentos</div> 
+    </header>
+
+    <div class="box">
+        <div class="block-nav-row">
+            <button class="arrow-btn" id="prevBlockBtn" aria-label="Bloco anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div class="block-info-group">
+                <span class="block-label" id="blockLabel">Bloco 1/4</span>
+                <span class="row-divider"></span>
+                <span class="pill" id="posPill">🧩 1/8</span>
+                <span class="pill" id="masteredPill">🎯 0/8 dominados</span>
+                <a class="pill pill-link" id="readBlockLink" href="leitura.html?bloco=1">📖 Ler</a>
+            </div>
+            <button class="arrow-btn" id="nextBlockBtn" aria-label="Próximo bloco">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="box" id="questionBox">
+        <button class="font-toggle-btn" id="fontToggleBtn" aria-label="Ajustar tamanho do texto">
+            Aa
+            <span class="font-toggle-dots" id="fontToggleDots">
+                <span></span><span></span><span></span><span></span>
+            </span>
+        </button>
+
+        <div class="hearts-display" id="heartsDisplay"></div>
+
+        <div class="description-text" id="descriptionText">Carregando...</div>
+
+        <div class="word-display" id="wordDisplay"></div>
+
+        <div class="letter-grid" id="letterGrid"></div>
+
+        <div class="input-group">
+            <input type="text" id="answerInput" placeholder="Digite a palavra" autocomplete="off">
+            <button class="btn" id="submitWordBtn">Tentar</button>
+        </div>
+
+        <div class="term-nav">
+            <button class="arrow-btn" id="prevTermBtn" aria-label="Termo anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="arrow-btn" id="nextTermBtn" aria-label="Próximo termo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="resultPanel">
+        <div id="resultContent"></div>
+    </div>
+</div>
+
+<script src="./dados.js"></script>
+<script src="./shared.js"></script>
+<script src="./script.js"></script>
+
+</body>
+</html>

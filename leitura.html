@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="light dark">
-    <title>Juris Forca · Início</title>
+    <title>Juris Forca · Leitura</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,37 +26,51 @@
     </script>
 </head>
 <body>
-<div class="container" id="app">
+<div class="container container-wide" id="app">
     <header>
+        <a class="home-link-btn" href="index.html" aria-label="Voltar ao início">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path></svg>
+        </a>
         <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Ativar modo escuro">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line></svg>
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
         <h1>Juris Forca</h1>
-        <div class="subhead">Direito Penal · Princípios e fundamentos</div>
+        <div class="subhead">Leitura geral · todos os termos por bloco</div>
     </header>
 
-    <div class="box intro-box">
-        <p class="intro-text">
-            Escolha um bloco para <strong>jogar</strong> (forca com autoavaliação) ou para
-            <strong>ler</strong> o conteúdo com calma, no seu ritmo.
-        </p>
-        <div class="intro-stats">
-            <span class="pill" id="totalTermosPill">— termos</span>
-            <span class="pill" id="totalBlocosPill">— blocos</span>
+    <div class="box block-select-box">
+        <div class="block-select-header">
+            <span class="block-jump-label">Escolher blocos para ler:</span>
+            <div class="block-select-quick">
+                <button type="button" class="text-link-btn" id="selectAllBtn">Todos</button>
+                <button type="button" class="text-link-btn" id="selectNoneBtn">Nenhum</button>
+            </div>
         </div>
+        <div class="block-select-list" id="blockSelectList"></div>
     </div>
 
-    <div id="blockList" class="block-list"></div>
-
-    <div class="box read-all-box">
-        <a class="btn btn-outline btn-block" href="leitura.html">📚 Ler todos os blocos em sequência</a>
+    <div class="box block-jump-row">
+        <span class="block-jump-label">Ir para:</span>
+        <nav class="block-jump-links" id="blockJumpLinks"></nav>
+        <button class="font-toggle-btn" id="fontToggleBtn" aria-label="Ajustar tamanho do texto">
+            Aa
+            <span class="font-toggle-dots" id="fontToggleDots">
+                <span></span><span></span><span></span><span></span>
+            </span>
+        </button>
     </div>
+
+    <div id="readingContent"></div>
 </div>
+
+<button class="scroll-top-btn" id="scrollTopBtn" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+</button>
 
 <script src="./dados.js"></script>
 <script src="./shared.js"></script>
-<script src="./inicio.js"></script>
+<script src="./leitura.js"></script>
 
 </body>
 </html>
