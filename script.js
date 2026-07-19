@@ -299,7 +299,7 @@
         answerInput.value = '';
         answerInput.disabled = false;
         submitWordBtn.disabled = false;
-        answerInput.placeholder = 'Digite a palavra que falta...';
+        answerInput.placeholder = 'Digite a palavra';
 
         renderizarPalavra();
         renderizarLetras();
