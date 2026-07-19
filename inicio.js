@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="block-card-actions">
                 <a class="btn" href="jogo.html?bloco=${numero}">🎮 Estudar</a>
                 <a class="btn btn-outline" href="leitura.html?bloco=${numero}">📖 Ler</a>
+                <a class="btn btn-outline" href="recordar.html?bloco=${numero}">🧠 Recordar</a>
             </div>
         `;
         container.appendChild(card);
