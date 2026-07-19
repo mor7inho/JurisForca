@@ -539,7 +539,15 @@
 
         setResultado(`
             <div>
-                <div><span class="${statusClass}">${emoji} ${status}</span> <span class="term-display">${termoExibicao.toUpperCase()}</span></div>
+                <div class="result-status-row">
+                    <div class="result-status-text"><span class="${statusClass}">${emoji} ${status}</span> <span class="term-display">${termoExibicao.toUpperCase()}</span></div>
+                    <button class="font-toggle-btn expl-toggle" id="explFontToggleBtn" aria-label="Ajustar tamanho do texto da explicação" title="Tamanho da explicação">
+                        Aa
+                        <span class="font-toggle-dots" id="explFontToggleDots">
+                            <span></span><span></span><span></span><span></span>
+                        </span>
+                    </button>
+                </div>
                 <div class="explanation">${renderizarMarkdown(explicacao)}</div>
                 <div class="self-eval">
                     <button class="btn btn-success" data-eval="domino">🟢 Domino</button>
@@ -551,6 +559,8 @@
         document.querySelectorAll('[data-eval]').forEach(btn => {
             btn.addEventListener('click', (e) => processarAutoavaliacao(e.target.dataset.eval));
         });
+        vincularToggleFonteExplicacao();
+        aplicarEscalaExplicacao();
         answerInput.disabled = true;
         submitWordBtn.disabled = true;
         habilitarInput(false);
@@ -696,6 +706,36 @@
 
         aplicarEscala();
     })();
+
+    // ------------------------------------------------------------
+    // CONTROLE DE TAMANHO DE FONTE DA EXPLICAÇÃO (independente da pergunta)
+    // ------------------------------------------------------------
+    const escalasExplicacao = [1, 1.15, 1.3, 1.45];
+    const chaveEscalaExplicacao = 'forcaCarrossel_explFontScaleIndex';
+    let indiceEscalaExplicacao = parseInt(localStorage.getItem(chaveEscalaExplicacao), 10);
+    if (isNaN(indiceEscalaExplicacao) || indiceEscalaExplicacao < 0 || indiceEscalaExplicacao >= escalasExplicacao.length) {
+        indiceEscalaExplicacao = 0;
+    }
+
+    function aplicarEscalaExplicacao() {
+        document.documentElement.style.setProperty('--e-font-scale', escalasExplicacao[indiceEscalaExplicacao]);
+        localStorage.setItem(chaveEscalaExplicacao, indiceEscalaExplicacao);
+        document.querySelectorAll('#explFontToggleDots span').forEach((dot, i) => {
+            dot.classList.toggle('active', i <= indiceEscalaExplicacao);
+        });
+    }
+
+    function vincularToggleFonteExplicacao() {
+        const btn = document.getElementById('explFontToggleBtn');
+        if (!btn || btn.dataset.bound) return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', () => {
+            indiceEscalaExplicacao = (indiceEscalaExplicacao + 1) % escalasExplicacao.length;
+            aplicarEscalaExplicacao();
+        });
+    }
+
+    aplicarEscalaExplicacao();
 
     // Reajusta o tamanho da(s) palavra(s) oculta(s) longa(s) ao
     // redimensionar/girar a tela. Não afeta nenhum outro elemento.
