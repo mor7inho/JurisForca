@@ -666,7 +666,9 @@
         }
 
         .explanation {
-            margin: 22px auto 0;
+            margin: 20px auto 0;
+            padding-top: 18px;
+            border-top: 1px dashed var(--border-soft);
             max-width: 560px;
             font-family: var(--font-reading);
             color: var(--text-secondary);
@@ -778,14 +780,27 @@
             padding: 0;
         }
 
+        .self-eval-wrap {
+            margin: 18px 0 24px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border-soft);
+            animation: flashcardFadeIn 0.25s ease;
+        }
+
+        .self-eval-wrap .self-eval {
+            margin-top: 0;
+        }
+
+        .self-eval-wrap[hidden] {
+            display: none;
+        }
+
         .self-eval {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            margin: 30px 0 2px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
+            margin: 14px 0 0;
         }
 
         .self-eval .btn {
@@ -850,6 +865,12 @@
             color: var(--text-muted);
             font-size: 0.88rem;
             line-height: 1.5;
+        }
+
+        .block-complete-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
         }
 
         @media (max-width: 600px) {
@@ -1057,6 +1078,8 @@
         .term-card .explanation {
             margin: 0;
             max-width: none;
+            padding-top: 0;
+            border-top: none;
         }
 
         @media (max-width: 600px) {
@@ -1243,8 +1266,18 @@
             box-shadow: 0 1px 3px var(--shadow);
         }
 
-        .flashcard-answer .explanation:empty {
+        .flashcard-explanation {
+            text-align: left;
+            margin-top: clamp(22px, 6vw, 30px);
+            padding-top: clamp(16px, 5vw, 22px);
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        .flashcard-explanation:empty {
             display: none;
+            margin: 0;
+            padding: 0;
+            border: none;
         }
 
         .flashcard-answer .self-eval {

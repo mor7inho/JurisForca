@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CARTÃO ATUAL
     // ------------------------------------------------------------
     function carregarTermo(item) {
+        cardBox.hidden = false;
         termoAtual = item;
         revelado = false;
         aguardandoAutoavaliacao = false;
@@ -188,7 +189,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 Todos os ${totalBloco} conceitos deste bloco foram revisados.
                 ${ultimoBloco ? '<br>Você concluiu todos os blocos! 🎉' : '<br>Use a seta à direita para seguir para o próximo bloco.'}
             </div>
+            <div class="block-complete-actions">
+                <button class="btn btn-outline" id="restartBlockBtn">🔄 Reiniciar bloco</button>
+            </div>
         `);
+        const restartBtn = document.getElementById('restartBlockBtn');
+        if (restartBtn) restartBtn.addEventListener('click', reiniciarBlocoAtual);
+    }
+
+    function reiniciarBlocoAtual() {
+        estadoBlocos[blocoAtual] = criarEstadoBloco(blocoAtual);
+        const estado = estadoBlocos[blocoAtual];
+        filaAtual = estado.fila;
+        indiceFila = estado.indice;
+        dominadosCount = estado.dominados;
+        blocoFinalizado = estado.finalizado;
+        aguardandoAutoavaliacao = false;
+        revelado = false;
+        cardBox.hidden = false;
+        setResultado('');
+        carregarTermo(filaAtual[indiceFila]);
+        atualizarProgresso();
     }
 
     function navegarTermo(direcao) {

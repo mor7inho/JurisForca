@@ -166,6 +166,8 @@
     const nextTermBtn = document.getElementById('nextTermBtn');
     const readBlockLink = document.getElementById('readBlockLink');
     const recallBlockLink = document.getElementById('recallBlockLink');
+    const questionBox = document.getElementById('questionBox');
+    const selfEvalRow = document.getElementById('selfEvalRow');
 
     function setResultado(html) {
         resultContent.innerHTML = html;
@@ -238,6 +240,7 @@
     // FUNÇÕES PRINCIPAIS
     // ------------------------------------------------------------
     function carregarTermo(item) {
+        questionBox.hidden = false;
         termoAtual = item;
         termoRevelado = false;
         aguardandoAutoavaliacao = false;
@@ -261,6 +264,7 @@
         renderizarLetras();
         renderizarCoracoes();
         setResultado('');
+        if (selfEvalRow) selfEvalRow.hidden = true;
         habilitarInput(true);
         atualizarProgresso();
     }
@@ -458,15 +462,8 @@
                 <span style="color: var(--red);">❌ Palavra incorreta!</span>
                 <div style="margin-top:4px;"><span class="term-display">${termoExibicao.toUpperCase()}</span></div>
                 <div class="explanation">${renderizarMarkdown(termoAtual.explicacao)}</div>
-                <div class="self-eval">
-                    <button class="btn btn-success" data-eval="domino">🟢 Domino</button>
-                    <button class="btn btn-warning" data-eval="maisomenos">🟡 Aprendendo</button>
-                    <button class="btn btn-danger" data-eval="naodomino">🔴 Não sei</button>
-                </div>
             `);
-            document.querySelectorAll('[data-eval]').forEach(btn => {
-                btn.addEventListener('click', (e) => processarAutoavaliacao(e.target.dataset.eval));
-            });
+            if (selfEvalRow) selfEvalRow.hidden = false;
             answerInput.disabled = true;
             submitWordBtn.disabled = true;
             habilitarInput(false);
@@ -505,16 +502,9 @@
                     </button>
                 </div>
                 <div class="explanation">${renderizarMarkdown(explicacao)}</div>
-                <div class="self-eval">
-                    <button class="btn btn-success" data-eval="domino">🟢 Domino</button>
-                    <button class="btn btn-warning" data-eval="maisomenos">🟡 Aprendendo</button>
-                    <button class="btn btn-danger" data-eval="naodomino">🔴 Não sei</button>
-                </div>
             </div>
         `);
-        document.querySelectorAll('[data-eval]').forEach(btn => {
-            btn.addEventListener('click', (e) => processarAutoavaliacao(e.target.dataset.eval));
-        });
+        if (selfEvalRow) selfEvalRow.hidden = false;
         vincularToggleFonteExplicacao();
         aplicarEscalaExplicacao();
         answerInput.disabled = true;
@@ -558,14 +548,8 @@
 
     function mostrarBlocoConcluido() {
         const totalBloco = blocos[blocoAtual].length;
-        descriptionText.textContent = '';
-        wordDisplay.innerHTML = '';
-        letterGrid.innerHTML = '';
-        heartsDisplay.innerHTML = '';
-        answerInput.disabled = true;
-        submitWordBtn.disabled = true;
-        prevTermBtn.disabled = true;
-        nextTermBtn.disabled = true;
+        questionBox.hidden = true;
+        if (selfEvalRow) selfEvalRow.hidden = true;
         const ultimoBloco = blocoAtual === blocos.length - 1;
         setResultado(`
             <div class="block-complete">🏆 Bloco concluído!</div>
@@ -573,7 +557,26 @@
                 Todos os ${totalBloco} conceitos deste bloco foram dominados.
                 ${ultimoBloco ? '<br>Você concluiu todos os blocos! 🎉' : '<br>Use a seta à direita para seguir para o próximo bloco.'}
             </div>
+            <div class="block-complete-actions">
+                <button class="btn btn-outline" id="restartBlockBtn">🔄 Reiniciar bloco</button>
+            </div>
         `);
+        const restartBtn = document.getElementById('restartBlockBtn');
+        if (restartBtn) restartBtn.addEventListener('click', reiniciarBlocoAtual);
+    }
+
+    function reiniciarBlocoAtual() {
+        estadoBlocos[blocoAtual] = criarEstadoBloco(blocoAtual);
+        const estado = estadoBlocos[blocoAtual];
+        filaAtual = estado.fila;
+        indiceFila = estado.indice;
+        dominadosCount = estado.dominados;
+        jogoFinalizado = estado.finalizado;
+        aguardandoAutoavaliacao = false;
+        termoRevelado = false;
+        setResultado('');
+        carregarTermo(filaAtual[indiceFila]);
+        atualizarProgresso();
     }
 
     function habilitarInput(habilitado) {
@@ -634,6 +637,10 @@
     nextTermBtn.addEventListener('click', () => navegarTermo(1));
     prevBlockBtn.addEventListener('click', () => navegarBloco(-1));
     nextBlockBtn.addEventListener('click', () => navegarBloco(1));
+
+    document.querySelectorAll('#selfEvalRow [data-eval]').forEach(btn => {
+        btn.addEventListener('click', (e) => processarAutoavaliacao(e.currentTarget.dataset.eval));
+    });
 
     // ------------------------------------------------------------
     // CONTROLE DE TAMANHO DE FONTE DA PERGUNTA
