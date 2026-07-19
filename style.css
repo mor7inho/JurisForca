@@ -666,7 +666,7 @@
             h1 { font-size: 1.15rem; }
             .box { margin-bottom: 10px; }
             .description-text { font-size: calc(1rem * var(--q-font-scale)); margin-bottom: 28px; }
-            .word-display { font-size: 1.5rem; gap: 8px 14px; padding-bottom: 26px; }
+            .word-display { font-size: 1.5rem; gap: 8px 14px; padding-bottom: 42px; }
             .word-display .letter-slot { min-width: 20px; }
             .letter-grid { gap: 7px; margin-bottom: 16px; }
             .letter-btn { width: 38px; height: 38px; font-size: 0.95rem; border-radius: 10px; }
