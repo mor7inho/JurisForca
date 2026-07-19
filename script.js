@@ -504,8 +504,8 @@
                 <div class="explanation">${renderizarMarkdown(termoAtual.explicacao)}</div>
                 <div class="self-eval">
                     <button class="btn btn-success" data-eval="domino">🟢 Domino</button>
-                    <button class="btn btn-warning" data-eval="maisomenos">🟡 Mais ou menos</button>
-                    <button class="btn btn-danger" data-eval="naodomino">🔴 Não domino</button>
+                    <button class="btn btn-warning" data-eval="maisomenos">🟡 Aprendendo</button>
+                    <button class="btn btn-danger" data-eval="naodomino">🔴 Não sei</button>
                 </div>
             `);
             document.querySelectorAll('[data-eval]').forEach(btn => {
@@ -551,8 +551,8 @@
                 <div class="explanation">${renderizarMarkdown(explicacao)}</div>
                 <div class="self-eval">
                     <button class="btn btn-success" data-eval="domino">🟢 Domino</button>
-                    <button class="btn btn-warning" data-eval="maisomenos">🟡 Mais ou menos</button>
-                    <button class="btn btn-danger" data-eval="naodomino">🔴 Não domino</button>
+                    <button class="btn btn-warning" data-eval="maisomenos">🟡 Aprendendo</button>
+                    <button class="btn btn-danger" data-eval="naodomino">🔴 Não sei</button>
                 </div>
             </div>
         `);
