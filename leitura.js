@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h2>Bloco ${numero}</h2>
                 <span class="pill">${bloco.length} termos</span>
                 <a class="btn btn-outline btn-sm" href="jogo.html?bloco=${numero}">🎮 Estudar este bloco</a>
+                <a class="btn btn-outline btn-sm" href="recordar.html?bloco=${numero}">🧠 Recordar este bloco</a>
             `;
             section.appendChild(header);
 

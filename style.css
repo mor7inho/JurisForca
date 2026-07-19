@@ -1019,6 +1019,10 @@
         }
 
         .block-section-header .btn {
+            margin-left: 0;
+        }
+
+        .block-section-header .btn:first-of-type {
             margin-left: auto;
         }
 
@@ -1056,7 +1060,8 @@
         }
 
         @media (max-width: 600px) {
-            .block-section-header .btn { margin-left: 0; }
+            .block-section-header .btn,
+            .block-section-header .btn:first-of-type { margin-left: 0; }
             .block-card-actions .btn { flex: 1 1 120px; }
         }
 
@@ -1176,5 +1181,77 @@
         .scroll-top-btn svg {
             width: 19px;
             height: 19px;
+        }
+
+        /* ============================================================
+           MODO RECORDAR — flashcards (termo → tenta lembrar → revela)
+           ============================================================ */
+        .flashcard-box {
+            position: relative;
+            padding-top: clamp(52px, 12vw, 64px);
+            text-align: center;
+        }
+
+        .flashcard-term {
+            font-family: var(--font-reading);
+            font-weight: 600;
+            font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+            color: var(--text-primary);
+            line-height: 1.5;
+            letter-spacing: 0.1px;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: clamp(20px, 6vw, 30px) clamp(16px, 4.6vw, 24px);
+            box-shadow: 0 1px 2px var(--shadow);
+            margin: 0 auto clamp(18px, 5vw, 26px);
+        }
+
+        .reveal-btn {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto clamp(22px, 6vw, 30px);
+        }
+
+        .flashcard-answer {
+            margin-top: clamp(16px, 5vw, 24px);
+            margin-bottom: clamp(22px, 6vw, 30px);
+            text-align: left;
+            animation: flashcardFadeIn 0.25s ease;
+        }
+
+        @keyframes flashcardFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-desc {
+            font-family: var(--font-reading);
+            font-weight: 600;
+            font-style: normal;
+            text-align: center;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: calc(1.1rem * var(--e-font-scale));
+            background: var(--surface);
+            border: 1px solid var(--blue-soft);
+            border-left: 4px solid var(--blue);
+            border-radius: 12px;
+            padding: clamp(16px, 4.5vw, 20px) clamp(16px, 4.6vw, 22px);
+            margin-bottom: 18px;
+            box-shadow: 0 1px 3px var(--shadow);
+        }
+
+        .flashcard-answer .explanation:empty {
+            display: none;
+        }
+
+        .flashcard-answer .self-eval {
+            margin-top: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .flashcard-box { padding-top: 54px; }
         }
     

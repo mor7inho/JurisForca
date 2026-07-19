@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="light dark">
-    <title>Juris Forca · Jogo</title>
+    <title>Juris Forca · Recordar</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 
@@ -36,7 +36,7 @@
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
         <h1>Juris Forca</h1>
-        <div class="subhead">Direito Penal · Princípios e fundamentos</div> 
+        <div class="subhead">Modo recordar · veja o termo, tente lembrar antes de revelar</div>
     </header>
 
     <div class="box">
@@ -50,7 +50,7 @@
                 <span class="pill" id="posPill">🧩 1/8</span>
                 <span class="pill" id="masteredPill">🎯 0/8 dominados</span>
                 <a class="pill pill-link" id="readBlockLink" href="leitura.html?bloco=1">📖 Ler</a>
-                <a class="pill pill-link" id="recallBlockLink" href="recordar.html?bloco=1">🧠 Recordar</a>
+                <a class="pill pill-link" id="playBlockLink" href="jogo.html?bloco=1">🎮 Jogar</a>
             </div>
             <button class="arrow-btn" id="nextBlockBtn" aria-label="Próximo bloco">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="box" id="questionBox">
+    <div class="box flashcard-box" id="cardBox">
         <button class="font-toggle-btn" id="fontToggleBtn" aria-label="Ajustar tamanho do texto">
             Aa
             <span class="font-toggle-dots" id="fontToggleDots">
@@ -66,17 +66,18 @@
             </span>
         </button>
 
-        <div class="hearts-display" id="heartsDisplay"></div>
+        <div class="flashcard-term" id="flashcardTerm">Carregando...</div>
 
-        <div class="description-text" id="descriptionText">Carregando...</div>
+        <button class="btn reveal-btn" id="revealBtn">👁️ Mostrar significado</button>
 
-        <div class="word-display" id="wordDisplay"></div>
-
-        <div class="letter-grid" id="letterGrid"></div>
-
-        <div class="input-group">
-            <input type="text" id="answerInput" placeholder="Digite a palavra" autocomplete="off">
-            <button class="btn" id="submitWordBtn">Tentar</button>
+        <div class="flashcard-answer" id="flashcardAnswer" hidden>
+            <div class="answer-desc" id="answerDescricao"></div>
+            <div class="explanation" id="answerExplicacao"></div>
+            <div class="self-eval" id="selfEvalRow">
+                <button class="btn btn-success" data-eval="domino">🟢 Domino</button>
+                <button class="btn btn-warning" data-eval="maisomenos">🟡 Aprendendo</button>
+                <button class="btn btn-danger" data-eval="naodomino">🔴 Não sei</button>
+            </div>
         </div>
 
         <div class="term-nav">
@@ -96,7 +97,7 @@
 
 <script src="./dados.js"></script>
 <script src="./shared.js"></script>
-<script src="./script.js"></script>
+<script src="./recordar.js"></script>
 
 </body>
 </html>

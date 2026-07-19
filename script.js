@@ -165,6 +165,7 @@
     const prevTermBtn = document.getElementById('prevTermBtn');
     const nextTermBtn = document.getElementById('nextTermBtn');
     const readBlockLink = document.getElementById('readBlockLink');
+    const recallBlockLink = document.getElementById('recallBlockLink');
 
     function setResultado(html) {
         resultContent.innerHTML = html;
@@ -213,6 +214,7 @@
 
         blockLabel.textContent = `Bloco ${blocoAtual + 1}/${blocos.length}`;
         if (readBlockLink) readBlockLink.href = `leitura.html?bloco=${blocoAtual + 1}`;
+        if (recallBlockLink) recallBlockLink.href = `recordar.html?bloco=${blocoAtual + 1}`;
 
         if (jogoFinalizado || filaAtual.length === 0) {
             mostrarBlocoConcluido();
