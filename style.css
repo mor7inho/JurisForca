@@ -175,7 +175,8 @@
             font-size: calc(clamp(0.88rem, 3.6vw, 1rem) * var(--q-font-scale));
             color: #2e2e3a;
             line-height: 1.55;
-            margin: 0 auto clamp(16px, 5vw, 24px);
+            /*margin: 0 auto clamp(16px, 5vw, 24px);*/
+            margin: 0 auto clamp(24px, 6vw, 36px);
             max-width: none;
             transition: font-size 0.15s, background 0.15s;
             background: #fcfbf9;
@@ -246,7 +247,8 @@
             /**font-size: clamp(1rem, 5vw, 1.4rem);**/
             font-size: clamp(0.9rem, 4.5vw, 1.25rem);
             font-weight: 500;
-            padding: 0 0 clamp(14px, 5vw, 22px);
+            padding: 0 0 clamp(26px, 7vw, 36px);              
+            /*padding: 0 0 clamp(14px, 5vw, 22px);*/
             font-family: 'Courier New', monospace;
             color: #1a1a1f;
         }
