@@ -77,7 +77,7 @@ function tituloLimpo(termo) {
 // MARKDOWN (usado nas explicações, tanto no jogo quanto na leitura)
 // ------------------------------------------------------------
 if (typeof marked !== 'undefined') {
-    marked.setOptions({ breaks: true });
+    marked.setOptions({ breaks: true, gfm: true });
 }
 
 function renderizarMarkdown(md) {
